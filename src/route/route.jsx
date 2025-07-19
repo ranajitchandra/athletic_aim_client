@@ -4,6 +4,7 @@ import RootLayout from "../rootLayouts/RootLayout";
 import Home from "../pages/home/Home";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
+import AddEventForm from "../pages/event/AddEventForm";
 export const router = createBrowserRouter(
     [
         {
@@ -13,6 +14,10 @@ export const router = createBrowserRouter(
                 {
                     path: "/",
                     element: <Home></Home>
+                },
+                {
+                    path: "/addEvent",
+                    element: <AddEventForm></AddEventForm>
                 },
                 {
                     path: "/login",
