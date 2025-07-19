@@ -120,7 +120,7 @@ export default function Register() {
     };
 
     return (
-        <div className="flex justify-evenly items-center gap-4 min-h-screen bg-base-100">
+        <div className="flex justify-evenly items-center gap-4 min-h-screen bg-base-100 py-10">
 
             <form
                 onSubmit={handleSubmit}
@@ -198,7 +198,7 @@ export default function Register() {
                 >
                     <FcGoogle className="mr-2" /> Login with Google
                 </button>
-                <p className="text-accent mt-4">Already have an account? <Link to="/auth/login" className="link link-secondary font-bold">Login</Link></p>
+                <p className="text-accent mt-4">Already have an account? <Link to="/login" className="link link-secondary font-bold">Login</Link></p>
             </form>
             <div>
                 <Lottie style={{ width: "700px" }} animationData={registerAni}></Lottie>

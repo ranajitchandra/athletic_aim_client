@@ -133,7 +133,7 @@ export default function Login() {
 
                         <p
                             onClick={() => document.getElementById("my_modal_2").showModal()}
-                            className="mt-4 text-right text-sm text-secondary font-semibold cursor-pointer hover:underline"
+                            className="my-4 text-right text-sm text-secondary font-semibold cursor-pointer hover:underline"
                         >
                             Forgot Password?
                         </p>
@@ -152,7 +152,7 @@ export default function Login() {
                         >
                             <FcGoogle className="mr-2" /> Login with Google
                         </button>
-                        <p className="text-accent mt-4">Create an account <Link to="/auth/register" className="link link-secondary font-bold">Signup</Link></p>
+                        <p className="text-accent mt-4">Create an account <Link to="/register" className="link link-secondary font-bold">Signup</Link></p>
                     </form>
                 </div>
             </div>

@@ -43,7 +43,7 @@ export default function Navbar() {
                         </ul>
                     </div>
                     <div className="flex items-center gap-3">
-                        <img className="" width="150" src={athletLogo} alt="athlet" />
+                        <img width="150" src={athletLogo} alt="athlet" />
                     </div>
                 </div>
 
@@ -62,13 +62,13 @@ export default function Navbar() {
                 </div>
 
                 <div className="navbar-end">
-                    <input onClick={() => setTheTheme(!theTheme)} type="checkbox" defaultChecked className="toggle toggle-sm mr-5" />
+                    {/* <input onClick={() => setTheTheme(!theTheme)} type="checkbox" defaultChecked className="toggle toggle-sm mr-5" /> */}
                     {user ?
                         <div className="flex gap-2">
                             <div className="dropdown dropdown-end">
                                 <div
                                     tabIndex={0}
-                                    className="btn btn-ghost btn-circle avatar tooltip tooltip-left"
+                                    className="btn btn-ghost btn-circle avatar tooltip tooltip-left text-primary"
                                     data-tip={user.displayName}
                                 >
                                     <div className="w-10 rounded-full">
