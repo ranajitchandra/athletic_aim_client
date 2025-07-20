@@ -8,6 +8,7 @@ import AddEventForm from "../pages/event/AddEventForm";
 import Events from "../pages/event/Events";
 import ViewEventDetails from "../pages/event/ViewEventDetails";
 import ManageEvent from "../pages/manageEvent/manageEvent";
+import UpdateEvent from "../pages/manageEvent/UpdateEvent";
 export const router = createBrowserRouter(
     [
         {
@@ -34,6 +35,11 @@ export const router = createBrowserRouter(
                 {
                     path: "/manageEvent",
                     element: <ManageEvent></ManageEvent>
+                },
+                {
+                    path: "/updateEvent/:id",
+                    element: <UpdateEvent></UpdateEvent> ,
+                    loader: ({ params }) => fetch(`http://localhost:3000/events/${params.id}`)
                 },
                 {
                     path: "/login",

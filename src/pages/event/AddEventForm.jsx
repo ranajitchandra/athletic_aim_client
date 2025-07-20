@@ -3,7 +3,7 @@ import { AuthContext } from "../../context/AuthContextProvider";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function AddEventForm() {
+export default function AddEventForm({ eventdata }) {
     const { user } = useContext(AuthContext);
 
     const eventTypes = [
@@ -42,6 +42,7 @@ export default function AddEventForm() {
         difficulty: "",
     });
 
+    // Initialize creator info
     useEffect(() => {
         if (user) {
             setFormData((prev) => ({
@@ -51,6 +52,25 @@ export default function AddEventForm() {
             }));
         }
     }, [user]);
+
+    // Initialize eventdata (for editing)
+    useEffect(() => {
+        if (eventdata) {
+            setFormData({
+                name: eventdata.name || "",
+                type: eventdata.type || "",
+                date: eventdata.date || "",
+                venue: eventdata.venue || "",
+                description: eventdata.description || "",
+                creatorEmail: eventdata.creatorEmail || user?.email || "",
+                creatorName: eventdata.creatorName || user?.displayName || "",
+                pictureUrl: eventdata.pictureUrl || "",
+                athleticCategory: eventdata.athleticCategory || "",
+                contactNumber: eventdata.contactNumber || "",
+                difficulty: eventdata.difficulty || "",
+            });
+        }
+    }, [eventdata, user]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -65,43 +85,58 @@ export default function AddEventForm() {
             cleanData[key] = typeof formData[key] === "string" ? formData[key].trim() : formData[key];
         }
 
-        console.log(cleanData);
-
-        axios.post('http://localhost:3000/addEvent', cleanData)
-            .then((response) => {
-                if (response.data.insertedId) {
-                    Swal.fire({
-                        title: "Event Created Successfully",
-                        icon: "success",
-                    });
-
-                    setFormData({
-                        name: "",
-                        type: "",
-                        date: "",
-                        venue: "",
-                        description: "",
-                        creatorEmail: user?.email || "",
-                        creatorName: user?.displayName || "",
-                        pictureUrl: "",
-                        athleticCategory: "",
-                        contactNumber: "",
-                        difficulty: "",
-                    });
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        if (eventdata?._id) {
+            // Update
+            axios
+                .put(`http://localhost:3000/events/${eventdata._id}`, cleanData)
+                .then((response) => {
+                    if (response.data.modifiedCount) {
+                        Swal.fire({
+                            title: "Event Updated Successfully",
+                            icon: "success",
+                        });
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        } else {
+            // Create
+            axios
+                .post("http://localhost:3000/addEvent", cleanData)
+                .then((response) => {
+                    if (response.data.insertedId) {
+                        Swal.fire({
+                            title: "Event Created Successfully",
+                            icon: "success",
+                        });
+                        setFormData({
+                            name: "",
+                            type: "",
+                            date: "",
+                            venue: "",
+                            description: "",
+                            creatorEmail: user?.email || "",
+                            creatorName: user?.displayName || "",
+                            pictureUrl: "",
+                            athleticCategory: "",
+                            contactNumber: "",
+                            difficulty: "",
+                        });
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
     };
 
     return (
         <section className="max-w-2xl mx-auto p-6 bg-white rounded shadow my-10">
             <h2 className="text-2xl text-center font-bold mb-4 text-indigo-800">
-                Create New Event
+                {eventdata ? "Update Event" : "Create New Event"}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-
                 {/* Event Name */}
                 <div>
                     <label className="block font-medium text-gray-700">Event Name</label>
@@ -267,7 +302,7 @@ export default function AddEventForm() {
                     type="submit"
                     className="bg-primary text-white font-medium px-4 py-2 rounded hover:bg-primary/85 cursor-pointer"
                 >
-                    Create Event
+                    {eventdata ? "Update Event" : "Create Event"}
                 </button>
             </form>
         </section>

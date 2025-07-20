@@ -4,9 +4,12 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { AuthContext } from "../../context/AuthContextProvider";
 import Loading from "../shared/Loading";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 export default function ManageEventList({ myEventPromise }) {
     const { user } = useContext(AuthContext);
+    const navigate = useNavigate()
+
     const eventsData = use(myEventPromise);
     const [viewMode, setViewMode] = useState("table"); // table | card
 
@@ -57,7 +60,7 @@ export default function ManageEventList({ myEventPromise }) {
 
     const handleUpdate = (id) => {
         console.log("Update event", id);
-        // implement your update logic here
+        navigate(`/updateEvent/${id}`)
     };
 
     return (
