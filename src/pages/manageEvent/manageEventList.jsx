@@ -81,7 +81,7 @@ export default function ManageEventList({ myEventPromise }) {
 
             {viewMode === "table" ? (
                 <div className="overflow-x-auto">
-                    <table className="min-w-full border-collapse border border-gray-300">
+                    <table className="min-w-full border-collapse border border-gray-300 my-4">
                         <thead>
                             <tr className="bg-[var(--color-secondary)] text-white">
                                 <th className="border border-gray-300 p-2 text-left">#</th>

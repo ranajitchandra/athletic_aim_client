@@ -1,4 +1,4 @@
-import { Link, useLoaderData, useNavigate } from "react-router";
+import { Link, useLoaderData, useNavigate, useParams } from "react-router";
 import Swal from "sweetalert2";
 import Lottie from "lottie-react";
 import errorPageJSON from "../../assets/error.json";
@@ -7,10 +7,13 @@ import { AuthContext } from "../../context/AuthContextProvider";
 
 function UpdateEvent() {
   const { user } = useContext(AuthContext);
+  const {id} = useParams()
   const navigate = useNavigate();
   const eventdata = useLoaderData();
 
-  if (eventdata?.error) {
+  console.log(id === eventdata._id);
+  
+  if (id !== eventdata._id) {
     return (
       <div className="h-screen flex flex-col items-center justify-center bg-white px-4 text-center">
         <Lottie style={{ width: "300px" }} animationData={errorPageJSON} loop />

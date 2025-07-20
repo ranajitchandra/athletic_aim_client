@@ -1,19 +1,19 @@
 import { Suspense, useContext } from "react";
-import ManageEventList from "./ManageEventList";
 import { AuthContext } from "../../context/AuthContextProvider";
+import MyBookingList from "./MyBookingList";
 import Loading from "../shared/Loading";
 
-export default function ManageEvent() {
+export default function MyBooking() {
     const { user } = useContext(AuthContext);
 
-    const myEventPromise = fetch(
-        `http://localhost:3000/events?email=${user?.email}`,
+    const myBookedEventPromise = fetch(
+        `http://localhost:3000/bookedEvent?email=${user?.email}`,
         { credentials: "include" }
     ).then(res => res.json());
 
     return (
         <Suspense fallback={<Loading></Loading>}>
-            <ManageEventList myEventPromise={myEventPromise} />
+            <MyBookingList myBookedEventPromise={myBookedEventPromise}></MyBookingList>
         </Suspense>
     );
 }
