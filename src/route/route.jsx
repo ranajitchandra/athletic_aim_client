@@ -11,6 +11,7 @@ import ManageEvent from "../pages/manageEvent/manageEvent";
 import UpdateEvent from "../pages/manageEvent/UpdateEvent";
 import ErrorPage from "../pages/shared/ErrorPage";
 import MyBooking from "../pages/myBooking/MyBooking";
+import PrivateRoute from "./PrivateRoute";
 export const router = createBrowserRouter(
     [
         {
@@ -23,30 +24,30 @@ export const router = createBrowserRouter(
                 },
                 {
                     path: "/addEvent",
-                    element: <AddEventForm></AddEventForm>
+                    element: <PrivateRoute> <AddEventForm></AddEventForm> </PrivateRoute>
                 },
                 {
                     path: "/events",
-                    element: <Events></Events>
+                    element: <PrivateRoute> <Events></Events> </PrivateRoute>
                 },
                 {
                     path: "/viewEventDetails/:id",
-                    element: <ViewEventDetails></ViewEventDetails>,
+                    element: <PrivateRoute> <ViewEventDetails></ViewEventDetails> </PrivateRoute>,
                     loader: ({ params }) => fetch(`http://localhost:3000/events/${params.id}`)
                 },
                 {
                     path: "/manageEvent",
-                    element: <ManageEvent></ManageEvent>
+                    element: <PrivateRoute> <ManageEvent></ManageEvent> </PrivateRoute>
                 },
                 {
                     path: "/updateEvent/:id",
-                    element: <UpdateEvent></UpdateEvent> ,
+                    element: <PrivateRoute> <UpdateEvent></UpdateEvent> </PrivateRoute>,
                     loader: ({ params }) => fetch(`http://localhost:3000/events/${params.id}`),
                     hydrateFallbackElement: <ErrorPage></ErrorPage>
                 },
                 {
                     path: "/myBooking",
-                    element: <MyBooking></MyBooking>
+                    element: <PrivateRoute> <MyBooking></MyBooking> </PrivateRoute>
                 },
                 {
                     path: "/login",

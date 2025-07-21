@@ -35,7 +35,7 @@ export default function Testimonials() {
     return (
         <section className="py-12 bg-white">
             <div className="text-center mb-8">
-                <h2 className="text-4xl font-bold text-indigo-900 mb-2">Testimonials</h2>
+                <h2 className="text-4xl font-bold text-primary mb-2">Testimonials</h2>
                 <p className="text-gray-600 max-w-xl mx-auto">
                     Hear what our clients and partners have to say about working with us.
                 </p>

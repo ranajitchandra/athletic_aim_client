@@ -27,7 +27,7 @@ export default function TopTrainers() {
     return (
         <section className="py-12 bg-white">
             <div className="max-w-full mx-auto px-4 text-center">
-                <h2 className="text-4xl font-bold text-indigo-900 mb-4">
+                <h2 className="text-4xl font-bold text-primary mb-4">
                     Our Top Trainers
                 </h2>
                 <p className="text-gray-600 mb-10 max-w-2xl mx-auto">

@@ -26,7 +26,7 @@ const clubs = [
 export default function SportsClubs() {
   return (
     <section className="text-center px-4 py-12 bg-white overflow-hidden">
-      <h2 className="text-3xl font-bold text-blue-900 my-10">
+      <h2 className="text-3xl font-bold text-primary my-10">
         Sports Clubs That Joined Our Arena
       </h2>
 
