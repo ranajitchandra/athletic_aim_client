@@ -38,7 +38,7 @@ export default function ViewEventDetails() {
         AOS.init({ duration: 1000, once: true });
     }, []);
 
-    // http://localhost:3000/eventBooking/${event._id}
+    // https://athletic-server.vercel.app/eventBooking/${event._id}
 
 
     const handleEventBooked = async (e) => {
@@ -46,7 +46,7 @@ export default function ViewEventDetails() {
 
         try {
             // Check if user already booked
-            const res = await axios.get(`http://localhost:3000/eventBooking/${event._id}`);
+            const res = await axios.get(`https://athletic-server.vercel.app/eventBooking/${event._id}`);
             if (res.data.bookedUser === user.email) {
                 Swal.fire({
                     title: "You already booked this event",
@@ -63,7 +63,7 @@ export default function ViewEventDetails() {
             };
 
             const postRes = await axios.post(
-                "http://localhost:3000/eventBooking",
+                "https://athletic-server.vercel.app/eventBooking",
                 eventBooked
             );
 
@@ -88,7 +88,7 @@ export default function ViewEventDetails() {
     // const handleEventBooked = (e) => {
     //     e.preventDefault();
 
-    //     axios.get(`http://localhost:3000/eventBooking/${event._id}`)
+    //     axios.get(`https://athletic-server.vercel.app/eventBooking/${event._id}`)
     //         .then(function (response) {
     //             // console.log(response.data.bookedUser, user.email);
     //             if (response.data.bookedUser === user.email) {
@@ -110,7 +110,7 @@ export default function ViewEventDetails() {
     //         eventID: event._id,
     //         bookedUser: user.email
     //     }
-    //     axios.post('http://localhost:3000/eventBooking', eventBooked)
+    //     axios.post('https://athletic-server.vercel.app/eventBooking', eventBooked)
     //         .then(function (response) {
     //             console.log(response.data);
     //             if (response.data.insertedId) {

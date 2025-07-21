@@ -88,7 +88,7 @@ export default function AddEventForm({ eventdata }) {
         if (eventdata?._id) {
             // Update
             axios
-                .put(`http://localhost:3000/events/${eventdata._id}`, cleanData)
+                .put(`https://athletic-server.vercel.app/events/${eventdata._id}`, cleanData)
                 .then((response) => {
                     if (response.data.modifiedCount) {
                         Swal.fire({
@@ -103,7 +103,7 @@ export default function AddEventForm({ eventdata }) {
         } else {
             // Create
             axios
-                .post("http://localhost:3000/addEvent", cleanData)
+                .post("https://athletic-server.vercel.app/addEvent", cleanData)
                 .then((response) => {
                     if (response.data.insertedId) {
                         Swal.fire({

@@ -33,7 +33,7 @@ export const router = createBrowserRouter(
                 {
                     path: "/viewEventDetails/:id",
                     element: <PrivateRoute> <ViewEventDetails></ViewEventDetails> </PrivateRoute>,
-                    loader: ({ params }) => fetch(`http://localhost:3000/events/${params.id}`)
+                    loader: ({ params }) => fetch(`https://athletic-server.vercel.app/events/${params.id}`)
                 },
                 {
                     path: "/manageEvent",
@@ -42,7 +42,7 @@ export const router = createBrowserRouter(
                 {
                     path: "/updateEvent/:id",
                     element: <PrivateRoute> <UpdateEvent></UpdateEvent> </PrivateRoute>,
-                    loader: ({ params }) => fetch(`http://localhost:3000/events/${params.id}`),
+                    loader: ({ params }) => fetch(`https://athletic-server.vercel.app/events/${params.id}`),
                     hydrateFallbackElement: <ErrorPage></ErrorPage>
                 },
                 {
