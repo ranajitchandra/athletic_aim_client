@@ -1,15 +1,38 @@
 import React, { useContext, useEffect } from "react";
-import { useLoaderData } from "react-router";
+import { Link, useLoaderData, useParams } from "react-router";
 import { motion } from "framer-motion";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { AuthContext } from "../../context/AuthContextProvider";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Lottie from "lottie-react";
+import errorPageJSON from "../../assets/error.json";
 
 export default function ViewEventDetails() {
     const { user } = useContext(AuthContext)
+    const { id } = useParams()
     const event = useLoaderData();
+
+    if (id !== event._id) {
+        return (
+            <div className="h-screen flex flex-col items-center justify-center bg-white px-4 text-center">
+                <Lottie style={{ width: "300px" }} animationData={errorPageJSON} loop />
+                <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-2">
+                    Your event could not be found
+                </h2>
+                <p className="text-gray-600 mb-6">
+                    Please check the URL or go back to the homepage.
+                </p>
+                <Link
+                    to="/events"
+                    className="px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-secondary transition"
+                >
+                    Go to Events
+                </Link>
+            </div>
+        );
+    }
 
     useEffect(() => {
         AOS.init({ duration: 1000, once: true });

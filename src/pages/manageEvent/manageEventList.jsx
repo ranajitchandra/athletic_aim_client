@@ -89,7 +89,6 @@ export default function ManageEventList({ myEventPromise }) {
                                 <th className="border border-gray-300 p-2 text-left">Type</th>
                                 <th className="border border-gray-300 p-2 text-left">Date</th>
                                 <th className="border border-gray-300 p-2 text-left">Venue</th>
-                                <th className="border border-gray-300 p-2 text-left">Description</th>
                                 <th className="border border-gray-300 p-2 text-left">Creator Email</th>
                                 <th className="border border-gray-300 p-2 text-left">Category</th>
                                 <th className="border border-gray-300 p-2 text-left">Contact</th>
@@ -113,9 +112,6 @@ export default function ManageEventList({ myEventPromise }) {
                                     <td className="border border-gray-300 p-2">{event.type}</td>
                                     <td className="border border-gray-300 p-2">{event.date}</td>
                                     <td className="border border-gray-300 p-2">{event.venue}</td>
-                                    <td className="border border-gray-300 p-2 max-w-xs truncate" title={event.description}>
-                                        {event.description}
-                                    </td>
                                     <td className="border border-gray-300 p-2">{event.creatorEmail}</td>
                                     <td className="border border-gray-300 p-2">{event.athleticCategory}</td>
                                     <td className="border border-gray-300 p-2">{event.contactNumber}</td>
