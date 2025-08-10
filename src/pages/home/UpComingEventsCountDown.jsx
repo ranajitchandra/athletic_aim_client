@@ -54,7 +54,7 @@ export default function UpComingEventsCountDown() {
     if (!event) return <p className="text-center text-lg mt-10">No upcoming events found.</p>;
 
     return (
-        <div className="max-w-lg mx-auto bg-primary rounded-xl shadow-2xl p-8 text-white text-center select-none">
+        <div className="max-w-lg mx-auto bg-secondary rounded-xl shadow-2xl p-8 text-white text-center select-none">
             <h2 className="text-4xl font-extrabold mb-4 drop-shadow-lg">⏳ Upcoming Event</h2>
             <p className="text-xl mb-2 font-semibold drop-shadow">{event.name}</p>
             <p className="text-md mb-6 italic opacity-80 drop-shadow">{event.venue}</p>
@@ -81,9 +81,9 @@ export default function UpComingEventsCountDown() {
 
 function TimeBox({ label, value }) {
     return (
-        <div className="bg-secondary bg-opacity-90 rounded-xl w-20 h-24 flex flex-col justify-center items-center shadow-lg">
-            <div className="text-4xl font-bold text-accent">{value}</div>
-            <div className="text-sm uppercase tracking-wide text-white/80 mt-1">{label}</div>
+        <div className="bg-primary bg-opacity-90 rounded-xl w-20 h-24 flex flex-col justify-center items-center shadow-lg">
+            <div className="text-4xl font-bold text-whaite">{value}</div>
+            <div className="text-sm uppercase tracking-wide text-white/98 mt-1">{label}</div>
         </div>
     );
 }

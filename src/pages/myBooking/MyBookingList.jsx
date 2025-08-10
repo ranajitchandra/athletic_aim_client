@@ -9,7 +9,6 @@ export default function MyBookingList({ myBookedEventPromise }) {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate()
     const bookedData = use(myBookedEventPromise);
-    console.log(bookedData.length);
 
     useEffect(() => {
         if (bookedData.length === 0) {
@@ -27,6 +26,8 @@ export default function MyBookingList({ myBookedEventPromise }) {
     const [loading, setLoading] = useState(true);
     const [bookings, setBookings] = useState([]);
     const [viewMode, setViewMode] = useState("table"); // 'table' | 'card'
+
+    console.log(bookings.length);
 
     useEffect(() => {
         if (user?.email && bookedData?.length) {
@@ -65,7 +66,7 @@ export default function MyBookingList({ myBookedEventPromise }) {
                                 <th className="border border-gray-300 p-2 text-left">Type</th>
                                 <th className="border border-gray-300 p-2 text-left">Date</th>
                                 <th className="border border-gray-300 p-2 text-left">Creator Email</th>
-                                <th className="border border-gray-300 p-2 text-left">Contact</th>
+                                <th className="border border-gray-300 p-2 text-left">Price</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -89,7 +90,7 @@ export default function MyBookingList({ myBookedEventPromise }) {
                                     <td className="border border-gray-300 p-2">{event.type}</td>
                                     <td className="border border-gray-300 p-2">{event.date}</td>
                                     <td className="border border-gray-300 p-2">{event.creatorEmail}</td>
-                                    <td className="border border-gray-300 p-2">{event.contactNumber}</td>
+                                    <td className="border border-gray-300 p-2">${event.price.toLocaleString()}</td>
                                 </motion.tr>
                             ))}
                         </tbody>

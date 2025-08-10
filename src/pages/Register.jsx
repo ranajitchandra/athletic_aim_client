@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { AuthContext } from "../context/AuthContextProvider";
 import Lottie from "lottie-react";
 import registerAni from "../assets/registerlottie.json"
+import useAxiosApi from "./hooks/useAxiosApi";
 
 export default function Register() {
     const { createUser, updateProfileUser, loginWithGoogle } = useContext(AuthContext);
@@ -15,6 +16,7 @@ export default function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
+    const axiosInstance = useAxiosApi();
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$/;
@@ -96,7 +98,22 @@ export default function Register() {
 
         if (Object.keys(newErrors).length === 0) {
             createUser(email, password)
-                .then((result) => {
+                .then(async (result) => {
+
+                    // update userinfo in the database
+                    const userInfo = {
+                        name,             // from input
+                        photoURL: photo,  // from input
+                        email,
+                        role: 'user',
+                        created_at: new Date().toISOString(),
+                        last_log_in: new Date().toISOString()
+                    };
+
+                    const userRes = await axiosInstance.post('/users', userInfo);
+                    console.log(userRes.data);
+
+
                     updateProfileUser(userData)
                         .then(() => {
                             toast.success(`Welcome, ${result.user.displayName}`);
@@ -112,8 +129,23 @@ export default function Register() {
 
     const handleGoogleLogin = () => {
         loginWithGoogle()
-            .then((result) => {
+            .then(async (result) => {
                 toast.success(`Login Successful, ${result.user.displayName}`);
+                const user = result.user;
+                console.log(result.user);
+                // update userinfo in the database
+                const userInfo = {
+                    name: user.displayName,             // from input
+                    photoURL: user.photoURL,  // from input
+                    email: user.email,
+                    role: 'user',
+                    created_at: new Date().toISOString(),
+                    last_log_in: new Date().toISOString()
+                };
+
+                const res = await axiosInstance.post('/users', userInfo);
+                console.log('user update info', res.data)
+
                 navigate(location.state || "/");
             })
             .catch(() => toast.error("Google Login Failed"));

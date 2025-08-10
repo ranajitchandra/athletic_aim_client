@@ -76,7 +76,7 @@ const PaymentForm = () => {
 
                 const bookingData = {
                     eventId: eventId,
-                    userEmail: user.email,
+                    bookedUser: user.email,
                     eventName: eventInfo.name,
                     creatorEmail: eventInfo.creatorEmail,
                     transactionId,

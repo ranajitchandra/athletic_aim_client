@@ -36,10 +36,7 @@ export default function Navbar() {
                         </div>
                         <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow">
                             <li><NavLink to="/" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Home</NavLink></li>
-                            <li><NavLink to="/explore_gardeners" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Explore Gardeners</NavLink></li>
-                            <li><NavLink to="/tips" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Browse Tips</NavLink></li>
-                            <li><NavLink to="/share_garden_tip" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Share a Garden Tip</NavLink></li>
-                            <li><NavLink to="/my_tips" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">My Tips</NavLink></li>
+                            
                         </ul>
                     </div>
                     <div className="flex items-center gap-3">
@@ -54,7 +51,9 @@ export default function Navbar() {
                         { user &&
                             <>
                                 <li><NavLink to="/events" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Events</NavLink></li>
+                                <li><NavLink to="/myBooking" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">My Booking</NavLink></li>
                                 <li><NavLink to="/addEvent" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Add Event</NavLink></li>
+                                <li><NavLink to="/manageEvent" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Manage Event</NavLink></li>
                             </>
                         }
                     </ul>
@@ -84,19 +83,10 @@ export default function Navbar() {
                                 >
                                     <li className="border-b border-gray-200">
                                         <Link to="/addEvent">
-                                            <span className="font-bold">Create Event</span>
+                                            <span className="font-bold">Profile</span>
                                         </Link>
                                     </li>
-                                    <li className="border-b border-gray-200">
-                                        <Link to="/myBooking">
-                                            <span className="font-bold">My Booking</span>
-                                        </Link>
-                                    </li>
-                                    <li className="border-b border-gray-200">
-                                        <Link to="/manageEvent">
-                                            <span className="font-bold">Manage Event</span>
-                                        </Link>
-                                    </li>
+                                    
                                     <li className="border-b border-gray-200">
                                         <a>
                                             Email: <span className="font-bold">{user.email}</span>
