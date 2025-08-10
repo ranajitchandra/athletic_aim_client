@@ -110,7 +110,13 @@ export default function ManageEventList({ myEventPromise }) {
                                         {event.name}
                                     </td>
                                     <td className="border border-gray-300 p-2">{event.type}</td>
-                                    <td className="border border-gray-300 p-2">{event.date}</td>
+                                    <td className="border border-gray-300 p-2">
+                                        {new Date(event.date).toLocaleDateString("en-US", {
+                                            year: "numeric",
+                                            month: "short",
+                                            day: "numeric"
+                                        })}
+                                    </td>
                                     <td className="border border-gray-300 p-2">{event.venue}</td>
                                     <td className="border border-gray-300 p-2">{event.creatorEmail}</td>
                                     <td className="border border-gray-300 p-2">{event.athleticCategory}</td>

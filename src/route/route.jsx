@@ -13,6 +13,8 @@ import ErrorPage from "../pages/shared/ErrorPage";
 import MyBooking from "../pages/myBooking/MyBooking";
 import PrivateRoute from "./PrivateRoute";
 import Payment from "../pages/Payment/Payment";
+import AdminRoute from "../pages/roleAccess/AdminRoute";
+import UserRoute from "../pages/roleAccess/UserRoute";
 export const router = createBrowserRouter(
     [
         {
@@ -24,10 +26,6 @@ export const router = createBrowserRouter(
                     element: <Home></Home>
                 },
                 {
-                    path: "/addEvent",
-                    element: <PrivateRoute> <AddEventForm></AddEventForm> </PrivateRoute>
-                },
-                {
                     path: "/events",
                     element: <PrivateRoute> <Events></Events> </PrivateRoute>
                 },
@@ -37,22 +35,26 @@ export const router = createBrowserRouter(
                     loader: ({ params }) => fetch(`http://localhost:3000/events/${params.id}`)
                 },
                 {
+                    path: "/addEvent",
+                    element: <AdminRoute> <AddEventForm></AddEventForm> </AdminRoute>
+                },
+                {
                     path: "/payment/:eventId",
                     element: <PrivateRoute> <Payment></Payment> </PrivateRoute>
                 },
                 {
                     path: "/manageEvent",
-                    element: <PrivateRoute> <ManageEvent></ManageEvent> </PrivateRoute>
+                    element: <AdminRoute> <ManageEvent></ManageEvent> </AdminRoute>
                 },
                 {
                     path: "/updateEvent/:id",
-                    element: <PrivateRoute> <UpdateEvent></UpdateEvent> </PrivateRoute>,
+                    element: <AdminRoute> <UpdateEvent></UpdateEvent> </AdminRoute>,
                     loader: ({ params }) => fetch(`http://localhost:3000/events/${params.id}`),
                     hydrateFallbackElement: <ErrorPage></ErrorPage>
                 },
                 {
                     path: "/myBooking",
-                    element: <PrivateRoute> <MyBooking></MyBooking> </PrivateRoute>
+                    element: <UserRoute><MyBooking></MyBooking></UserRoute>
                 },
                 {
                     path: "/login",

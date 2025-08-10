@@ -44,6 +44,7 @@ function UpdateEvent() {
         athleticCategory,
         contactNumber,
         difficulty,
+        price,
         userName,
         userEmail,
     } = eventdata;
@@ -56,6 +57,8 @@ function UpdateEvent() {
         pictureUrl: "",
         athleticCategory: "",
         contactNumber: "",
+        date: "",
+        price: "",
         userName: "",
         userEmail: "",
     });
@@ -71,6 +74,8 @@ function UpdateEvent() {
             pictureUrl,
             athleticCategory,
             contactNumber,
+            date: date ? date.split("T")[0] : "",
+            price: price || "",
         }));
     }, [eventdata]);
 
@@ -95,13 +100,18 @@ function UpdateEvent() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const updatedData = {
+            ...formData,
+            price: parseInt(formData.price, 10), // convert to integer
+            date: new Date(formData.date),       // convert to Date object
+        };
 
         fetch(`http://localhost:3000/events/${_id}`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json",
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(updatedData),
         })
             .then((res) => res.json())
             .then((data) => {
@@ -148,6 +158,33 @@ function UpdateEvent() {
                         required
                     />
                 </div>
+
+                {/* Event Date */}
+                <div>
+                    <label className="block font-medium text-gray-700">Event Date</label>
+                    <input
+                        type="date"
+                        name="date"
+                        value={formData.date}
+                        onChange={handleChange}
+                        className="w-full border rounded p-2"
+                        required
+                    />
+                </div>
+
+                {/* Event Price */}
+                <div>
+                    <label className="block font-medium text-gray-700">Price</label>
+                    <input
+                        type="number"
+                        name="price"
+                        value={formData.price}
+                        onChange={handleChange}
+                        className="w-full border rounded p-2"
+                        required
+                    />
+                </div>
+
 
                 {/* Difficulty */}
                 <div>

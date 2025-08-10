@@ -6,11 +6,13 @@ import { toast } from "react-toastify"
 import { useContext } from "react"
 import { AuthContext } from "../../context/AuthContextProvider"
 import Loading from "./Loading"
+import useUserRole from "../hooks/useUserRole"
 
 
 export default function Navbar() {
 
     const { user, loading, theTheme, setTheTheme, logOutUser } = useContext(AuthContext)
+    const { role, roleLoading } = useUserRole()
     const navigate = useNavigate()
 
     if (loading) {
@@ -36,7 +38,7 @@ export default function Navbar() {
                         </div>
                         <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow">
                             <li><NavLink to="/" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Home</NavLink></li>
-                            
+
                         </ul>
                     </div>
                     <div className="flex items-center gap-3">
@@ -48,13 +50,21 @@ export default function Navbar() {
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal gap-4 px-1">
                         <li><NavLink to="/" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Home</NavLink></li>
-                        { user &&
-                            <>
-                                <li><NavLink to="/events" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Events</NavLink></li>
-                                <li><NavLink to="/myBooking" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">My Booking</NavLink></li>
-                                <li><NavLink to="/addEvent" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Add Event</NavLink></li>
-                                <li><NavLink to="/manageEvent" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Manage Event</NavLink></li>
-                            </>
+                        <li><NavLink to="/events" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Events</NavLink></li>
+                        {user && !roleLoading && role === 'user' &&
+                            (
+                                <>
+                                    <li><NavLink to="/myBooking" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">My Booking</NavLink></li>
+                                </>
+                            )
+                        }
+                        {user && !roleLoading && role === 'admin' &&
+                            (
+                                <>
+                                    <li><NavLink to="/addEvent" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Add Event</NavLink></li>
+                                    <li><NavLink to="/manageEvent" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Manage Event</NavLink></li>
+                                </>
+                            )
                         }
                     </ul>
                 </div>
@@ -86,7 +96,7 @@ export default function Navbar() {
                                             <span className="font-bold">Profile</span>
                                         </Link>
                                     </li>
-                                    
+
                                     <li className="border-b border-gray-200">
                                         <a>
                                             Email: <span className="font-bold">{user.email}</span>
