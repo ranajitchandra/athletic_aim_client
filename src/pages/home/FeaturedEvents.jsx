@@ -31,7 +31,7 @@ export default function FeaturedEvents() {
     const featuredEvents = sortedEvents.slice(0, 6);
 
     return (
-        <section className="bg-white py-15">
+        <section className="bg-white p-10">
             <motion.h2
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -62,7 +62,7 @@ export default function FeaturedEvents() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4 }}
-                        className="bg-white border border-primary rounded-2xl shadow-lg overflow-hidden flex flex-col"
+                        className="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col"
                     >
                         <div className="relative">
                             <img

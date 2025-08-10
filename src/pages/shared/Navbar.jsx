@@ -26,7 +26,7 @@ export default function Navbar() {
 
     return (
         <>
-            <div className="navbar bg-base-100 shadow-md border-b border-b-gray-300">
+            <div className="navbar bg-base-100 shadow-md border-b border-b-gray-300 px-10 sticky top-0 z-50">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -43,7 +43,7 @@ export default function Navbar() {
                         </ul>
                     </div>
                     <div className="flex items-center gap-3">
-                        <img width="150" src={athletLogo} alt="athlet" />
+                        <img width="120" src={athletLogo} alt="athlet" />
                     </div>
                 </div>
 

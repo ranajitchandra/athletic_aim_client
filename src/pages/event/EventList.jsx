@@ -8,11 +8,11 @@ export default function EventsList({ myEventPromise }) {
     return (
         <>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 m-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 m-10">
                 {events.map((event, index) => (
                     <motion.div
                         key={event._id}
-                        className="bg-white rounded-2xl p-4 flex flex-col items-center"
+                        className="bg-white shadow-md rounded-2xl p-4 flex flex-col items-center"
                         style={{ cursor: "pointer" }}
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}

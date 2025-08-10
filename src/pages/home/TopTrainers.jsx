@@ -25,7 +25,7 @@ const trainers = [
 
 export default function TopTrainers() {
     return (
-        <section className="py-12 bg-white">
+        <section className="p-10 bg-white">
             <div className="max-w-full mx-auto px-4 text-center">
                 <h2 className="text-4xl font-bold text-primary mb-4">
                     Our Top Trainers
