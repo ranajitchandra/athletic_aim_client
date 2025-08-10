@@ -96,7 +96,7 @@ function UpdateEvent() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        fetch(`https://athletic-server.vercel.app/events/${_id}`, {
+        fetch(`http://localhost:3000/events/${_id}`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json",

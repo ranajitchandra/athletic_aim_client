@@ -40,6 +40,7 @@ export default function AddEventForm({ eventdata }) {
         athleticCategory: "",
         contactNumber: "",
         difficulty: "",
+        price: "",
     });
 
     // Initialize creator info
@@ -68,6 +69,7 @@ export default function AddEventForm({ eventdata }) {
                 athleticCategory: eventdata.athleticCategory || "",
                 contactNumber: eventdata.contactNumber || "",
                 difficulty: eventdata.difficulty || "",
+                price: eventdata.price || "",
             });
         }
     }, [eventdata, user]);
@@ -88,7 +90,7 @@ export default function AddEventForm({ eventdata }) {
         if (eventdata?._id) {
             // Update
             axios
-                .put(`https://athletic-server.vercel.app/events/${eventdata._id}`, cleanData)
+                .put(`http://localhost:3000/events/${eventdata._id}`, cleanData)
                 .then((response) => {
                     if (response.data.modifiedCount) {
                         Swal.fire({
@@ -103,7 +105,7 @@ export default function AddEventForm({ eventdata }) {
         } else {
             // Create
             axios
-                .post("https://athletic-server.vercel.app/addEvent", cleanData)
+                .post("http://localhost:3000/addEvent", cleanData)
                 .then((response) => {
                     if (response.data.insertedId) {
                         Swal.fire({
@@ -179,6 +181,22 @@ export default function AddEventForm({ eventdata }) {
                         value={formData.date}
                         onChange={handleChange}
                         className="w-full border rounded p-2"
+                        required
+                    />
+                </div>
+
+                {/* Price */}
+                <div>
+                    <label className="block font-medium text-gray-700">Price</label>
+                    <input
+                        type="number"
+                        name="price"
+                        value={formData.price}
+                        onChange={handleChange}
+                        placeholder="Enter price (in USD)"
+                        className="w-full border rounded p-2"
+                        min="0"
+                        step="0.01"
                         required
                     />
                 </div>

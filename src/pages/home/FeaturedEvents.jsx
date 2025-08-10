@@ -9,7 +9,7 @@ export default function FeaturedEvents() {
 
     useEffect(() => {
         axios
-            .get("https://athletic-server.vercel.app/events", { withCredentials: true })
+            .get("http://localhost:3000/events", { withCredentials: true })
             .then((res) => {
                 setEvents(res.data);
             })

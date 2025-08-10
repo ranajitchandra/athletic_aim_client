@@ -5,7 +5,7 @@ import Loading from "../shared/Loading";
 
 export default function Events() {
     // create the promise immediately
-    // const myEventPromise = axios("https://athletic-server.vercel.app/events", {
+    // const myEventPromise = axios("http://localhost:3000/events", {
     //     withCredentials: true
     // }).then(res => res.data);
 
@@ -13,7 +13,7 @@ export default function Events() {
 
     const [search, setSearch] = useState("");
     const [myEventPromise, setMyEventPromise] = useState(
-        axios("https://athletic-server.vercel.app/events", {
+        axios("http://localhost:3000/events", {
             withCredentials: true
         }).then(res => res.data)
 
@@ -28,7 +28,7 @@ export default function Events() {
 
 
         setMyEventPromise(
-            axios("https://athletic-server.vercel.app/events", {
+            axios("http://localhost:3000/events", {
                 params,
                 withCredentials: true
             }).then(res => res.data)

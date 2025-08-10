@@ -12,6 +12,7 @@ import UpdateEvent from "../pages/manageEvent/UpdateEvent";
 import ErrorPage from "../pages/shared/ErrorPage";
 import MyBooking from "../pages/myBooking/MyBooking";
 import PrivateRoute from "./PrivateRoute";
+import Payment from "../pages/Payment/Payment";
 export const router = createBrowserRouter(
     [
         {
@@ -33,7 +34,11 @@ export const router = createBrowserRouter(
                 {
                     path: "/viewEventDetails/:id",
                     element: <PrivateRoute> <ViewEventDetails></ViewEventDetails> </PrivateRoute>,
-                    loader: ({ params }) => fetch(`https://athletic-server.vercel.app/events/${params.id}`)
+                    loader: ({ params }) => fetch(`http://localhost:3000/events/${params.id}`)
+                },
+                {
+                    path: "/payment/:eventId",
+                    element: <PrivateRoute> <Payment></Payment> </PrivateRoute>
                 },
                 {
                     path: "/manageEvent",
@@ -42,7 +47,7 @@ export const router = createBrowserRouter(
                 {
                     path: "/updateEvent/:id",
                     element: <PrivateRoute> <UpdateEvent></UpdateEvent> </PrivateRoute>,
-                    loader: ({ params }) => fetch(`https://athletic-server.vercel.app/events/${params.id}`),
+                    loader: ({ params }) => fetch(`http://localhost:3000/events/${params.id}`),
                     hydrateFallbackElement: <ErrorPage></ErrorPage>
                 },
                 {

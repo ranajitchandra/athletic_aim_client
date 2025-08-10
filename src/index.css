@@ -67,7 +67,7 @@
 
 
 
-/* When theme is dark */
+When theme is dark
 [data-theme="dark"] a.active {
   background-color: var(--color-primary); /* Dark theme's primary color */
   color: #ffffff;

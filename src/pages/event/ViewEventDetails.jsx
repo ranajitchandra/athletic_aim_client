@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Link, useLoaderData, useParams } from "react-router";
+import { Link, useLoaderData, useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -13,6 +13,7 @@ export default function ViewEventDetails() {
     const { user } = useContext(AuthContext)
     const { id } = useParams()
     const event = useLoaderData();
+    const navigate = useNavigate();
 
     if (id !== event._id) {
         return (
@@ -38,7 +39,7 @@ export default function ViewEventDetails() {
         AOS.init({ duration: 1000, once: true });
     }, []);
 
-    // https://athletic-server.vercel.app/eventBooking/${event._id}
+    // http://localhost:3000/eventBooking/${event._id}
 
 
     const handleEventBooked = async (e) => {
@@ -46,7 +47,7 @@ export default function ViewEventDetails() {
 
         try {
             // Check if user already booked
-            const res = await axios.get(`https://athletic-server.vercel.app/eventBooking/${event._id}`);
+            const res = await axios.get(`http://localhost:3000/eventBooking/${event._id}`);
             if (res.data.bookedUser === user.email) {
                 Swal.fire({
                     title: "You already booked this event",
@@ -56,24 +57,26 @@ export default function ViewEventDetails() {
                 return; // 🚫 stop here if already booked
             }
 
+            navigate(`/payment/${event._id}`);
+
             // If not booked, proceed to book
-            const eventBooked = {
-                eventID: event._id,
-                bookedUser: user.email,
-            };
+            // const eventBooked = {
+            //     eventID: event._id,
+            //     bookedUser: user.email,
+            // };
 
-            const postRes = await axios.post(
-                "https://athletic-server.vercel.app/eventBooking",
-                eventBooked
-            );
+            // const postRes = await axios.post(
+            //     "http://localhost:3000/eventBooking",
+            //     eventBooked
+            // );
 
-            if (postRes.data.insertedId) {
-                Swal.fire({
-                    title: "Event Booked Successful",
-                    icon: "success",
-                    draggable: true,
-                });
-            }
+            // if (postRes.data.insertedId) {
+            //     Swal.fire({
+            //         title: "Event Booked Successful",
+            //         icon: "success",
+            //         draggable: true,
+            //     });
+            // }
         } catch (error) {
             console.error(error);
             Swal.fire({
@@ -88,7 +91,7 @@ export default function ViewEventDetails() {
     // const handleEventBooked = (e) => {
     //     e.preventDefault();
 
-    //     axios.get(`https://athletic-server.vercel.app/eventBooking/${event._id}`)
+    //     axios.get(`http://localhost:3000/eventBooking/${event._id}`)
     //         .then(function (response) {
     //             // console.log(response.data.bookedUser, user.email);
     //             if (response.data.bookedUser === user.email) {
@@ -110,7 +113,7 @@ export default function ViewEventDetails() {
     //         eventID: event._id,
     //         bookedUser: user.email
     //     }
-    //     axios.post('https://athletic-server.vercel.app/eventBooking', eventBooked)
+    //     axios.post('http://localhost:3000/eventBooking', eventBooked)
     //         .then(function (response) {
     //             console.log(response.data);
     //             if (response.data.insertedId) {
@@ -131,7 +134,7 @@ export default function ViewEventDetails() {
 
     return (
         <motion.div
-            className="max-w-4xl mx-auto bg-white shadow-xl rounded-3xl p-8 md:flex gap- my-10"
+            className="max-w-4xl mx-auto bg-white shadow-2xl rounded-3xl p-8 md:flex gap-2 mt-5 mb-10"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -185,6 +188,10 @@ export default function ViewEventDetails() {
                     <p>
                         <span className="font-semibold text-secondary">Description: </span>
                         {event.description}
+                    </p>
+                    <p>
+                        <span className="font-semibold text-secondary">Price: </span>
+                        {event.price}$
                     </p>
                 </div>
 

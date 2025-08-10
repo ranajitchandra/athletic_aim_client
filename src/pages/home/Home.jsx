@@ -5,6 +5,7 @@ import SportsClubs from "./SportsClub";
 import TopTrainers from "./TopTrainers";
 import Testimonials from "./Testimonials";
 import FeaturedEvents from "./FeaturedEvents";
+import UpComingEventsCountDown from "./UpcomingEventsCountDown";
 
 export default function Home() {
 
@@ -13,6 +14,7 @@ export default function Home() {
             {/* <Hero></Hero> */}
             <Slider></Slider>
             <FeaturedEvents></FeaturedEvents>
+            <UpComingEventsCountDown></UpComingEventsCountDown>
             <SportsClubs></SportsClubs>
             <TopTrainers></TopTrainers>
             <Testimonials></Testimonials>
