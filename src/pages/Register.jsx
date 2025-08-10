@@ -113,7 +113,7 @@ export default function Register() {
                     const userRes = await axiosInstance.post('/users', userInfo);
                     console.log(userRes.data);
 
-
+                    
                     updateProfileUser(userData)
                         .then(() => {
                             toast.success(`Welcome, ${result.user.displayName}`);

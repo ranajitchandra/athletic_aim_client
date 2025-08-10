@@ -63,6 +63,7 @@ export default function Navbar() {
                                 <>
                                     <li><NavLink to="/addEvent" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Add Event</NavLink></li>
                                     <li><NavLink to="/manageEvent" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Manage Event</NavLink></li>
+                                    <li><NavLink to="/users" className="hover:bg-primary py-1 px-5 hover:text-white duration-500 rounded-sm">Users</NavLink></li>
                                 </>
                             )
                         }
@@ -92,7 +93,7 @@ export default function Navbar() {
                                     className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-4 w-60 p-4 shadow"
                                 >
                                     <li className="border-b border-gray-200">
-                                        <Link to="/addEvent">
+                                        <Link to="/profile">
                                             <span className="font-bold">Profile</span>
                                         </Link>
                                     </li>

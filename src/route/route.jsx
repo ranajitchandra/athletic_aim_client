@@ -15,6 +15,8 @@ import PrivateRoute from "./PrivateRoute";
 import Payment from "../pages/Payment/Payment";
 import AdminRoute from "../pages/roleAccess/AdminRoute";
 import UserRoute from "../pages/roleAccess/UserRoute";
+import ViewAllUsers from "../pages/users/ViewAllUsers";
+import Profile from "../pages/profile/profile";
 export const router = createBrowserRouter(
     [
         {
@@ -63,6 +65,14 @@ export const router = createBrowserRouter(
                 {
                     path: "/register",
                     element: <Register></Register>
+                },
+                {
+                    path: "/users",
+                    element: <AdminRoute> <ViewAllUsers></ViewAllUsers> </AdminRoute>
+                },
+                {
+                    path: "/profile",
+                    element: <PrivateRoute> <Profile></Profile> </PrivateRoute>
                 },
                 {
                     path: "*",
