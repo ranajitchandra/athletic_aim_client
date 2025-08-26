@@ -10,24 +10,24 @@ import Lottie from "lottie-react";
 import errorPageJSON from "../../assets/error.json";
 
 export default function ViewEventDetails() {
-    const { user } = useContext(AuthContext)
-    const { id } = useParams()
+    const { user } = useContext(AuthContext);
+    const { id } = useParams();
     const event = useLoaderData();
     const navigate = useNavigate();
 
     if (id !== event._id) {
         return (
-            <div className="h-screen flex flex-col items-center justify-center bg-white px-4 text-center">
+            <div className="h-screen flex flex-col items-center justify-center bg-base-200 px-4 text-center">
                 <Lottie style={{ width: "300px" }} animationData={errorPageJSON} loop />
                 <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-2">
-                    Your event could not be found
+                    Event Not Found
                 </h2>
                 <p className="text-gray-600 mb-6">
-                    Please check the URL or go back to the homepage.
+                    Please check the URL or go back to the events page.
                 </p>
                 <Link
                     to="/events"
-                    className="px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-secondary transition"
+                    className="px-6 py-2 bg-gradient-to-r from-primary to-secondary text-white rounded-lg shadow hover:brightness-110 transition"
                 >
                     Go to Events
                 </Link>
@@ -39,46 +39,20 @@ export default function ViewEventDetails() {
         AOS.init({ duration: 1000, once: true });
     }, []);
 
-    // http://localhost:3000/eventBooking/${event._id}
-
-
     const handleEventBooked = async (e) => {
         e.preventDefault();
-
         try {
-            // Check if user already booked
-            const res = await axios.get(`http://localhost:3000/eventBooking/${event._id}`);
+            const res = await axios.get(`https://athletic-server.vercel.app/eventBooking/${event._id}`);
             if (res.data.bookedUser === user.email) {
                 Swal.fire({
                     title: "You already booked this event",
                     icon: "info",
                     confirmButtonText: "OK",
                 });
-                return; // 🚫 stop here if already booked
+                return;
             }
-
             navigate(`/payment/${event._id}`);
-
-            // If not booked, proceed to book
-            // const eventBooked = {
-            //     eventID: event._id,
-            //     bookedUser: user.email,
-            // };
-
-            // const postRes = await axios.post(
-            //     "http://localhost:3000/eventBooking",
-            //     eventBooked
-            // );
-
-            // if (postRes.data.insertedId) {
-            //     Swal.fire({
-            //         title: "Event Booked Successful",
-            //         icon: "success",
-            //         draggable: true,
-            //     });
-            // }
         } catch (error) {
-            console.error(error);
             Swal.fire({
                 title: "Something went wrong",
                 text: error.message || "Please try again later.",
@@ -87,118 +61,69 @@ export default function ViewEventDetails() {
         }
     };
 
-
-    // const handleEventBooked = (e) => {
-    //     e.preventDefault();
-
-    //     axios.get(`http://localhost:3000/eventBooking/${event._id}`)
-    //         .then(function (response) {
-    //             // console.log(response.data.bookedUser, user.email);
-    //             if (response.data.bookedUser === user.email) {
-    //                 Swal.fire({
-    //                     title: "You already booked this event",
-    //                     icon: "info",
-    //                     confirmButtonText: "OK"
-    //                 });
-
-    //                 return
-
-    //             }
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-
-    //     const eventBooked = {
-    //         eventID: event._id,
-    //         bookedUser: user.email
-    //     }
-    //     axios.post('http://localhost:3000/eventBooking', eventBooked)
-    //         .then(function (response) {
-    //             console.log(response.data);
-    //             if (response.data.insertedId) {
-    //                 Swal.fire({
-    //                     title: "Event Booked Successful",
-    //                     icon: "success",
-    //                     draggable: true
-    //                 });
-
-    //             }
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-
-    // };
-
-
     return (
         <motion.div
-            className="max-w-4xl mx-auto bg-white shadow-2xl rounded-3xl p-8 md:flex gap-2 mt-5 mb-10"
+            className="max-w-5xl mx-auto p-6 md:p-10 mt-10 mb-16 bg-gradient-to-br from-base-100 to-base-200 rounded-3xl shadow-2xl flex flex-col md:flex-row gap-8"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
         >
-            {/* Left side image */}
+            {/* Left Image */}
             <div
-                className="md:w-1/2 flex justify-center items-center"
+                className="md:w-1/2 flex justify-center items-center rounded-2xl overflow-hidden"
                 data-aos="fade-right"
             >
                 <img
                     src={event.pictureUrl}
                     alt={event.creatorName}
-                    className="w-64 h-64 rounded-2xl shadow-lg object-cover"
+                    className="w-full h-80 md:h-96 object-cover rounded-2xl"
                 />
             </div>
 
-            {/* Right side details */}
-            <div className="md:w-1/2 space-y-4" data-aos="fade-left">
-                <h2 className="text-3xl font-bold text-secondary">{event.name}</h2>
-                <p className="text-sm text-gray-500">
-                    Created by: {event.creatorName} ({event.creatorEmail})
+            {/* Right Details */}
+            <div className="md:w-1/2 space-y-4 text-center md:text-left" data-aos="fade-left">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-primary mb-2">
+                    {event.name}
+                </h2>
+                <p className="text-base-content/70 text-sm md:text-base">
+                    Created by: <span className="font-semibold text-secondary">{event.creatorName}</span> ({event.creatorEmail})
                 </p>
 
-                <div className="space-y-2">
-                    <p>
-                        <span className="font-semibold text-secondary">Type: </span>
-                        {event.type}
+                <div className="space-y-2 text-gray-700">
+                    <p className="text-base-content/70">
+                        <span className="font-semibold text-secondary">Type:</span> {event.type}
                     </p>
-                    <p>
-                        <span className="font-semibold text-secondary">Date: </span>
-                        {event.date}
+                    <p className="text-base-content/70">
+                        <span className="font-semibold text-secondary">Date:</span> {new Date(event.date).toLocaleDateString()}
                     </p>
-                    <p>
-                        <span className="font-semibold text-secondary">Venue: </span>
-                        {event.venue}
+                    <p className="text-base-content/70">
+                        <span className="font-semibold text-secondary">Venue:</span> {event.venue}
                     </p>
-                    <p>
-                        <span className="font-semibold text-secondary">Athletic Category: </span>
-                        {event.athleticCategory}
+                    <p className="text-base-content/70">
+                        <span className="font-semibold text-secondary">Category:</span> {event.athleticCategory}
                     </p>
-                    <p>
-                        <span className="font-semibold text-secondary">Difficulty: </span>
-                        <span className="inline-block px-2 py-1 text-xs font-semibold rounded bg-accent text-secondary">
+                    <p className="text-base-content/70">
+                        <span className="font-semibold text-secondary">Difficulty:</span>{" "}
+                        <span className="inline-block px-3 py-1 text-xs font-semibold rounded-full bg-accent text-white">
                             {event.difficulty}
                         </span>
                     </p>
-                    <p>
-                        <span className="font-semibold text-secondary">Contact Number: </span>
-                        {event.contactNumber}
+                    <p className="text-base-content/70">
+                        <span className="font-semibold text-secondary">Contact:</span> {event.contactNumber}
                     </p>
-                    <p>
-                        <span className="font-semibold text-secondary">Description: </span>
-                        {event.description}
+                    <p className="text-base-content/70">
+                        <span className="font-semibold text-secondary">Description:</span> {event.description}
                     </p>
-                    <p>
-                        <span className="font-semibold text-secondary">Price: </span>
-                        {event.price}$
+                    <p className="text-base-content/70">
+                        <span className="font-semibold text-secondary">Price:</span> ${event.price}
                     </p>
                 </div>
 
-                <motion.button onClick={handleEventBooked}
+                <motion.button
+                    onClick={handleEventBooked}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="btn btn-primary w-full mt-4"
+                    className="w-full py-3 mt-4 rounded-xl text-white font-bold bg-gradient-to-r from-primary to-secondary shadow-lg hover:brightness-110 transition"
                 >
                     Book Event
                 </motion.button>

@@ -7,7 +7,7 @@ export default function ManageEvent() {
     const { user } = useContext(AuthContext);
 
     const myEventPromise = fetch(
-        `http://localhost:3000/events?email=${user?.email}`,
+        `https://athletic-server.vercel.app/events?email=${user?.email}`,
         { credentials: "include" }
     ).then(res => res.json());
 

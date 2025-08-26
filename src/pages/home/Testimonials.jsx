@@ -30,13 +30,15 @@ const testimonials = [
     },
 ];
 
-
 export default function Testimonials() {
     return (
-        <section className="py-12 bg-white">
-            <div className="text-center mb-8">
-                <h2 className="text-4xl font-bold text-primary mb-2">Testimonials</h2>
-                <p className="text-gray-600 max-w-xl mx-auto">
+        <section className="py-16 bg-base-200">
+            <div className="text-center mb-12">
+                <h2 className="text-4xl font-extrabold text-primary relative inline-block">
+                    Testimonials
+                    <span className="block w-24 h-1 bg-secondary mx-auto mt-2 rounded-full"></span>
+                </h2>
+                <p className="text-gray-600 max-w-2xl mx-auto mt-4">
                     Hear what our clients and partners have to say about working with us.
                 </p>
             </div>
@@ -44,37 +46,33 @@ export default function Testimonials() {
             <div className="max-w-6xl mx-auto px-4">
                 <Swiper
                     modules={[Autoplay]}
-                    autoplay={{ delay: 3000, disableOnInteraction: false }}
+                    autoplay={{ delay: 3500, disableOnInteraction: false }}
                     loop
                     spaceBetween={30}
                     slidesPerView={2}
                     breakpoints={{
-                        0: {
-                            slidesPerView: 1,
-                        },
-                        768: {
-                            slidesPerView: 2,
-                        },
+                        0: { slidesPerView: 1 },
+                        768: { slidesPerView: 2 },
                     }}
                 >
                     {testimonials.map((testimonial, idx) => (
                         <SwiperSlide key={idx}>
-                            <div className="bg-white shadow-md rounded p-6 text-left my-6">
-                                <div className="flex mb-4">
+                            <div className="bg-white shadow-lg rounded-2xl p-6 text-left my-6 hover:shadow-xl hover:-translate-y-1 transition-transform duration-300">
+                                <div className="flex mb-4 gap-1">
                                     {[...Array(5)].map((_, i) => (
-                                        <span key={i} className="text-yellow-400 text-lg">★</span>
+                                        <span key={i} className="text-yellow-400 text-xl">★</span>
                                     ))}
                                 </div>
-                                <p className="text-gray-600 mb-4">{testimonial.text}</p>
+                                <p className="text-gray-700 mb-6">{testimonial.text}</p>
                                 <div className="flex items-center gap-4">
                                     <img
                                         src={testimonial.image}
                                         alt={testimonial.name}
-                                        className="w-12 h-12 rounded-full"
+                                        className="w-14 h-14 rounded-full object-cover"
                                     />
                                     <div>
-                                        <h4 className="text-red-600 font-bold">{testimonial.name}</h4>
-                                        <p className="text-black">{testimonial.role}</p>
+                                        <h4 className="text-primary font-bold">{testimonial.name}</h4>
+                                        <p className="text-gray-600">{testimonial.role}</p>
                                     </div>
                                 </div>
                             </div>

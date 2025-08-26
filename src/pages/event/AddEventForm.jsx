@@ -6,27 +6,9 @@ import Swal from "sweetalert2";
 export default function AddEventForm({ eventdata }) {
     const { user } = useContext(AuthContext);
 
-    const eventTypes = [
-        "Swimming",
-        "Sprinting",
-        "Long Jump",
-        "High Jump",
-        "Hurdle Race",
-    ];
-
-    const athleticCategories = [
-        "Track",
-        "Field",
-        "Indoor",
-        "Outdoor",
-        "Relay",
-    ];
-
-    const difficultyLevels = [
-        "Beginner",
-        "Intermediate",
-        "Advanced",
-    ];
+    const eventTypes = ["Swimming", "Sprinting", "Long Jump", "High Jump", "Hurdle Race"];
+    const athleticCategories = ["Track", "Field", "Indoor", "Outdoor", "Relay"];
+    const difficultyLevels = ["Beginner", "Intermediate", "Advanced"];
 
     const [formData, setFormData] = useState({
         name: "",
@@ -81,7 +63,6 @@ export default function AddEventForm({ eventdata }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         const cleanData = {};
         for (const key in formData) {
             cleanData[key] = typeof formData[key] === "string" ? formData[key].trim() : formData[key];
@@ -90,7 +71,7 @@ export default function AddEventForm({ eventdata }) {
         if (eventdata?._id) {
             // Update
             axios
-                .put(`http://localhost:3000/events/${eventdata._id}`, cleanData)
+                .put(`https://athletic-server.vercel.app/events/${eventdata._id}`, cleanData)
                 .then((response) => {
                     if (response.data.modifiedCount) {
                         Swal.fire({
@@ -99,13 +80,11 @@ export default function AddEventForm({ eventdata }) {
                         });
                     }
                 })
-                .catch((error) => {
-                    console.error(error);
-                });
+                .catch((error) => console.error(error));
         } else {
             // Create
             axios
-                .post("http://localhost:3000/addEvent", cleanData)
+                .post("https://athletic-server.vercel.app/addEvent", cleanData)
                 .then((response) => {
                     if (response.data.insertedId) {
                         Swal.fire({
@@ -124,43 +103,47 @@ export default function AddEventForm({ eventdata }) {
                             athleticCategory: "",
                             contactNumber: "",
                             difficulty: "",
+                            price: "",
                         });
                     }
                 })
-                .catch((error) => {
-                    console.error(error);
-                });
+                .catch((error) => console.error(error));
         }
     };
 
+    // **Reusable theme-aware input classes**
+    const inputClass =
+        "w-full border rounded-xl p-3 text-base-content placeholder:text-base-content/50 bg-base-100 focus:outline-none focus:ring-2 focus:ring-secondary transition";
+
     return (
-        <section className="max-w-2xl mx-auto p-6 bg-white rounded shadow my-10">
-            <h2 className="text-2xl text-center font-bold mb-4 text-indigo-800">
+        <section className="max-w-2xl mx-auto p-6 bg-base-200 rounded-2xl shadow-lg my-10">
+            <h2 className="text-2xl text-center font-bold mb-6 text-primary">
                 {eventdata ? "Update Event" : "Create New Event"}
             </h2>
+
             <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Event Name */}
                 <div>
-                    <label className="block font-medium text-gray-700">Event Name</label>
+                    <label className="block font-medium mb-1">Event Name</label>
                     <input
                         type="text"
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
                         placeholder="Enter event name"
-                        className="w-full border rounded p-2"
+                        className={inputClass}
                         required
                     />
                 </div>
 
                 {/* Event Type */}
                 <div>
-                    <label className="block font-medium text-gray-700">Event Type</label>
+                    <label className="block font-medium mb-1">Event Type</label>
                     <select
                         name="type"
                         value={formData.type}
                         onChange={handleChange}
-                        className="w-full border rounded p-2"
+                        className={inputClass}
                         required
                     >
                         <option value="">-- Select Event Type --</option>
@@ -174,27 +157,27 @@ export default function AddEventForm({ eventdata }) {
 
                 {/* Event Date */}
                 <div>
-                    <label className="block font-medium text-gray-700">Event Date</label>
+                    <label className="block font-medium mb-1">Event Date</label>
                     <input
                         type="date"
                         name="date"
                         value={formData.date}
                         onChange={handleChange}
-                        className="w-full border rounded p-2"
+                        className={inputClass}
                         required
                     />
                 </div>
 
                 {/* Price */}
                 <div>
-                    <label className="block font-medium text-gray-700">Price</label>
+                    <label className="block font-medium mb-1">Price</label>
                     <input
                         type="number"
                         name="price"
                         value={formData.price}
                         onChange={handleChange}
                         placeholder="Enter price (in USD)"
-                        className="w-full border rounded p-2"
+                        className={inputClass}
                         min="0"
                         step="0.01"
                         required
@@ -203,52 +186,52 @@ export default function AddEventForm({ eventdata }) {
 
                 {/* Venue */}
                 <div>
-                    <label className="block font-medium text-gray-700">Venue</label>
+                    <label className="block font-medium mb-1">Venue</label>
                     <input
                         type="text"
                         name="venue"
                         value={formData.venue}
                         onChange={handleChange}
                         placeholder="Enter venue/location"
-                        className="w-full border rounded p-2"
+                        className={inputClass}
                         required
                     />
                 </div>
 
                 {/* Description */}
                 <div>
-                    <label className="block font-medium text-gray-700">Description</label>
+                    <label className="block font-medium mb-1">Description</label>
                     <textarea
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
                         placeholder="Enter event description"
-                        className="w-full border rounded p-2"
+                        className={inputClass}
                         rows={4}
                     ></textarea>
                 </div>
 
                 {/* Picture URL */}
                 <div>
-                    <label className="block font-medium text-gray-700">Event Picture URL</label>
+                    <label className="block font-medium mb-1">Event Picture URL</label>
                     <input
                         type="url"
                         name="pictureUrl"
                         value={formData.pictureUrl}
                         onChange={handleChange}
                         placeholder="Enter image URL"
-                        className="w-full border rounded p-2"
+                        className={inputClass}
                     />
                 </div>
 
                 {/* Athletic Category */}
                 <div>
-                    <label className="block font-medium text-gray-700">Athletic Category</label>
+                    <label className="block font-medium mb-1">Athletic Category</label>
                     <select
                         name="athleticCategory"
                         value={formData.athleticCategory}
                         onChange={handleChange}
-                        className="w-full border rounded p-2"
+                        className={inputClass}
                         required
                     >
                         <option value="">-- Select Athletic Category --</option>
@@ -262,26 +245,26 @@ export default function AddEventForm({ eventdata }) {
 
                 {/* Contact Number */}
                 <div>
-                    <label className="block font-medium text-gray-700">Contact Number</label>
+                    <label className="block font-medium mb-1">Contact Number</label>
                     <input
                         type="text"
                         name="contactNumber"
                         value={formData.contactNumber}
                         onChange={handleChange}
                         placeholder="Enter contact number"
-                        className="w-full border rounded p-2"
+                        className={inputClass}
                         required
                     />
                 </div>
 
                 {/* Difficulty */}
                 <div>
-                    <label className="block font-medium text-gray-700">Difficulty Level</label>
+                    <label className="block font-medium mb-1">Difficulty Level</label>
                     <select
                         name="difficulty"
                         value={formData.difficulty}
                         onChange={handleChange}
-                        className="w-full border rounded p-2"
+                        className={inputClass}
                         required
                     >
                         <option value="">-- Select Difficulty Level --</option>
@@ -295,30 +278,30 @@ export default function AddEventForm({ eventdata }) {
 
                 {/* Creator Info */}
                 <div>
-                    <label className="block font-medium text-gray-700">Creator Email</label>
+                    <label className="block font-medium mb-1">Creator Email</label>
                     <input
                         type="email"
                         name="creatorEmail"
                         value={formData.creatorEmail}
                         readOnly
-                        className="w-full border rounded p-2 bg-gray-100"
+                        className={`${inputClass} bg-base-300 cursor-not-allowed`}
                     />
                 </div>
 
                 <div>
-                    <label className="block font-medium text-gray-700">Creator Name</label>
+                    <label className="block font-medium mb-1">Creator Name</label>
                     <input
                         type="text"
                         name="creatorName"
                         value={formData.creatorName}
                         readOnly
-                        className="w-full border rounded p-2 bg-gray-100"
+                        className={`${inputClass} bg-base-300 cursor-not-allowed`}
                     />
                 </div>
 
                 <button
                     type="submit"
-                    className="bg-primary text-white font-medium px-4 py-2 rounded hover:bg-primary/85 cursor-pointer"
+                    className="w-full py-3 bg-primary text-white font-medium rounded-xl hover:bg-primary/85 transition"
                 >
                     {eventdata ? "Update Event" : "Create Event"}
                 </button>

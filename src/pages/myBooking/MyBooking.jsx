@@ -7,7 +7,7 @@ export default function MyBooking() {
     const { user } = useContext(AuthContext);
 
     const myBookedEventPromise = fetch(
-        `http://localhost:3000/bookedEvent?email=${user?.email}`,
+        `https://athletic-server.vercel.app/bookedEvent?email=${user?.email}`,
         { credentials: "include" }
     ).then(res => res.json());
 

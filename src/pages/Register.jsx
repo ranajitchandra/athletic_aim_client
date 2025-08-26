@@ -10,7 +10,6 @@ import useAxiosApi from "./hooks/useAxiosApi";
 export default function Register() {
     const { createUser, updateProfileUser, loginWithGoogle } = useContext(AuthContext);
     const navigate = useNavigate();
-
     const [name, setName] = useState("");
     const [photo, setPhoto] = useState("");
     const [email, setEmail] = useState("");
@@ -21,201 +20,131 @@ export default function Register() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$/;
 
-
     const validateField = (field, value) => {
         const newErrors = { ...errors };
-
         if (field === "email") {
-            if (!emailRegex.test(value)) {
-                newErrors.email = "Invalid email format";
-            } else {
-                delete newErrors.email;
-            }
+            !emailRegex.test(value) ? newErrors.email = "Invalid email format" : delete newErrors.email;
         }
-
         if (field === "password") {
-            if (!passwordRegex.test(value)) {
-                newErrors.password =
-                    "Password must be at least 8 characters and include an uppercase and a lowercase letter with a special character.";
-            } else {
-                delete newErrors.password;
-            }
+            !passwordRegex.test(value) ? newErrors.password = "Password must be at least 8 characters, include uppercase, lowercase, and a special character." : delete newErrors.password;
         }
-
         if (field === "name") {
-            if (value.trim() === "") {
-                newErrors.name = "Name is required";
-            } else {
-                delete newErrors.name;
-            }
+            !value.trim() ? newErrors.name = "Name is required" : delete newErrors.name;
         }
-
         if (field === "photo") {
-            if (value.trim() === "") {
-                newErrors.photo = "Photo URL is required";
-            } else {
-                delete newErrors.photo;
-            }
+            !value.trim() ? newErrors.photo = "Photo URL is required" : delete newErrors.photo;
         }
-
         setErrors(newErrors);
     };
 
     const handleChange = (setter, field) => (e) => {
-        const value = e.target.value;
-        setter(value);
-        validateField(field, value);
+        setter(e.target.value);
+        validateField(field, e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
         const newErrors = {};
-
-        if (name.trim() === "") {
-            newErrors.name = "Name is required";
-        }
-
-        if (photo.trim() === "") {
-            newErrors.photo = "Photo URL is required";
-        }
-
-        if (!emailRegex.test(email)) {
-            newErrors.email = "Invalid email format";
-        }
-
-        if (!passwordRegex.test(password)) {
-            newErrors.password =
-                "Password must be at least 6 characters and include an uppercase and a lowercase letter.";
-        }
-
+        if (!name.trim()) newErrors.name = "Name is required";
+        if (!photo.trim()) newErrors.photo = "Photo URL is required";
+        if (!emailRegex.test(email)) newErrors.email = "Invalid email format";
+        if (!passwordRegex.test(password)) newErrors.password = "Password must be at least 8 characters and include uppercase, lowercase, special char";
         setErrors(newErrors);
 
-        const userData = {
-            displayName: name,
-            photoURL: photo
-        };
-
         if (Object.keys(newErrors).length === 0) {
-            createUser(email, password)
-                .then(async (result) => {
-
-                    // update userinfo in the database
-                    const userInfo = {
-                        name,             // from input
-                        photoURL: photo,  // from input
-                        email,
-                        role: 'user',
-                        created_at: new Date().toISOString(),
-                        last_log_in: new Date().toISOString()
-                    };
-
-                    const userRes = await axiosInstance.post('/users', userInfo);
-                    console.log(userRes.data);
-
-                    
-                    updateProfileUser(userData)
-                        .then(() => {
-                            toast.success(`Welcome, ${result.user.displayName}`);
-                        });
-                    navigate("/");
-                })
-                .catch((err) => {
-                    console.log(err.message);
-                    toast.info("You have created before");
+            try {
+                const result = await createUser(email, password);
+                await axiosInstance.post('/users', {
+                    name, photoURL: photo, email, role: 'user',
+                    created_at: new Date().toISOString(),
+                    last_log_in: new Date().toISOString()
                 });
+                await updateProfileUser({ displayName: name, photoURL: photo });
+                toast.success(`Welcome, ${result.user.displayName}`);
+                navigate("/");
+            } catch (err) {
+                toast.info("Account may already exist");
+            }
         }
     };
 
-    const handleGoogleLogin = () => {
-        loginWithGoogle()
-            .then(async (result) => {
-                toast.success(`Login Successful, ${result.user.displayName}`);
-                const user = result.user;
-                console.log(result.user);
-                // update userinfo in the database
-                const userInfo = {
-                    name: user.displayName,             // from input
-                    photoURL: user.photoURL,  // from input
-                    email: user.email,
-                    role: 'user',
-                    created_at: new Date().toISOString(),
-                    last_log_in: new Date().toISOString()
-                };
-
-                const res = await axiosInstance.post('/users', userInfo);
-                console.log('user update info', res.data)
-
-                navigate(location.state || "/");
-            })
-            .catch(() => toast.error("Google Login Failed"));
+    const handleGoogleLogin = async () => {
+        try {
+            const result = await loginWithGoogle();
+            toast.success(`Login Successful, ${result.user.displayName}`);
+            const user = result.user;
+            await axiosInstance.post('/users', {
+                name: user.displayName,
+                photoURL: user.photoURL,
+                email: user.email,
+                role: 'user',
+                created_at: new Date().toISOString(),
+                last_log_in: new Date().toISOString()
+            });
+            navigate("/");
+        } catch {
+            toast.error("Google Login Failed");
+        }
     };
 
     return (
-        <div className="flex justify-evenly items-center gap-4 min-h-screen bg-base-100 py-10">
-
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-6 min-h-screen bg-base-100 py-10 px-4">
+            {/* Form */}
             <form
                 onSubmit={handleSubmit}
-                className="bg-white p-8 rounded-md shadow-2xl w-96"
+                className="bg-white p-6 sm:p-8 rounded-md shadow-2xl w-full max-w-md"
             >
                 <h2 className="text-2xl font-bold mb-6 text-center text-primary">Register</h2>
 
+                {/* Name */}
                 <div className="mb-4">
                     <label className="block mb-1 font-medium text-accent">Name</label>
                     <input
                         type="text"
-                        className={`w-full px-3 py-2 rounded border ${errors.name ? "border-red-500" : "border-primary"
-                            } focus:outline-none focus:ring-2 focus:ring-primary transition`}
+                        className={`w-full px-3 py-2 rounded border ${errors.name ? "border-red-500" : "border-primary"} focus:outline-none focus:ring-2 focus:ring-primary transition`}
                         value={name}
                         onChange={handleChange(setName, "name")}
                     />
-                    {errors.name && (
-                        <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-                    )}
+                    {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                 </div>
 
+                {/* Photo URL */}
                 <div className="mb-4">
                     <label className="block mb-1 font-medium text-accent">Photo URL</label>
                     <input
                         type="text"
-                        className={`w-full px-3 py-2 rounded border ${errors.photo ? "border-red-500" : "border-primary"
-                            } focus:outline-none focus:ring-2 focus:ring-primary transition`}
+                        className={`w-full px-3 py-2 rounded border ${errors.photo ? "border-red-500" : "border-primary"} focus:outline-none focus:ring-2 focus:ring-primary transition`}
                         value={photo}
                         onChange={handleChange(setPhoto, "photo")}
                     />
-                    {errors.photo && (
-                        <p className="text-red-500 text-sm mt-1">{errors.photo}</p>
-                    )}
+                    {errors.photo && <p className="text-red-500 text-sm mt-1">{errors.photo}</p>}
                 </div>
 
+                {/* Email */}
                 <div className="mb-4">
                     <label className="block mb-1 font-medium text-accent">Email</label>
                     <input
                         type="text"
-                        className={`w-full px-3 py-2 rounded border ${errors.email ? "border-red-500" : "border-primary"
-                            } focus:outline-none focus:ring-2 focus:ring-primary transition`}
+                        className={`w-full px-3 py-2 rounded border ${errors.email ? "border-red-500" : "border-primary"} focus:outline-none focus:ring-2 focus:ring-primary transition`}
                         value={email}
                         onChange={handleChange(setEmail, "email")}
                     />
-                    {errors.email && (
-                        <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-                    )}
+                    {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                 </div>
 
+                {/* Password */}
                 <div className="mb-4">
                     <label className="block mb-1 font-medium text-accent">Password</label>
                     <input
                         type="password"
-                        className={`w-full px-3 py-2 rounded border ${errors.password ? "border-red-500" : "border-primary"
-                            } focus:outline-none focus:ring-2 focus:ring-primary transition`}
+                        className={`w-full px-3 py-2 rounded border ${errors.password ? "border-red-500" : "border-primary"} focus:outline-none focus:ring-2 focus:ring-primary transition`}
                         value={password}
                         onChange={handleChange(setPassword, "password")}
                     />
-                    {errors.password && (
-                        <p className="text-red-500 text-sm mt-1">{errors.password}</p>
-                    )}
+                    {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                 </div>
 
+                {/* Buttons */}
                 <button
                     type="submit"
                     className="w-full bg-primary text-white py-2 rounded hover:bg-secondary transition-colors duration-300"
@@ -224,18 +153,22 @@ export default function Register() {
                 </button>
 
                 <button
-                    onClick={handleGoogleLogin}
                     type="button"
-                    className="w-full flex cursor-pointer items-center justify-center text-accent mt-4 py-2 border border-primary rounded bg-white hover:bg-gray-100 transition"
+                    onClick={handleGoogleLogin}
+                    className="w-full flex items-center justify-center text-accent mt-4 py-2 border border-primary rounded bg-white hover:bg-gray-100 transition"
                 >
-                    <FcGoogle className="mr-2" /> Login with Google
+                    <FcGoogle className="mr-2" /> Register with Google
                 </button>
-                <p className="text-accent mt-4">Already have an account? <Link to="/login" className="link link-secondary font-bold">Login</Link></p>
+
+                <p className="text-accent mt-4 text-center">
+                    Already have an account? <Link to="/login" className="link link-secondary font-bold">Login</Link>
+                </p>
             </form>
-            <div>
-                <Lottie style={{ width: "700px" }} animationData={registerAni}></Lottie>
+
+            {/* Lottie Animation */}
+            <div className="w-full max-w-lg">
+                <Lottie animationData={registerAni} className="w-full h-auto" />
             </div>
         </div>
-
     );
 }

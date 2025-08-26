@@ -8,17 +8,16 @@ import { useNavigate } from "react-router";
 
 export default function ManageEventList({ myEventPromise }) {
     const { user } = useContext(AuthContext);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const eventsData = use(myEventPromise);
     const [viewMode, setViewMode] = useState("table"); // table | card
-
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (user?.email && eventsData?.length) {
-            setEvents(eventsData.filter(item => item.creatorEmail === user.email));
+            setEvents(eventsData.filter((item) => item.creatorEmail === user.email));
             setLoading(false);
         }
     }, [user?.email, eventsData]);
@@ -29,14 +28,12 @@ export default function ManageEventList({ myEventPromise }) {
             text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
+            confirmButtonColor: "var(--color-primary)",
+            cancelButtonColor: "var(--color-error)",
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/events/${id}`, {
-                    method: 'DELETE'
-                })
+                fetch(`https://athletic-server.vercel.app/events/${id}`, { method: 'DELETE' })
                     .then(res => res.json())
                     .then(data => {
                         if (data.deletedCount) {
@@ -45,55 +42,39 @@ export default function ManageEventList({ myEventPromise }) {
                                 text: "Event has been deleted.",
                                 icon: "success"
                             });
-
-                            const remainingEvents = events.filter(event => event._id !== id);
-                            setEvents(remainingEvents);
+                            setEvents(events.filter(event => event._id !== id));
                         }
                     });
             }
         });
     };
 
-    if (loading) {
-        return <Loading />;
-    }
+    if (loading) return <Loading />;
 
-    const handleUpdate = (id) => {
-        console.log("Update event", id);
-        navigate(`/updateEvent/${id}`)
-    };
+    const handleUpdate = (id) => navigate(`/updateEvent/${id}`);
 
     return (
-        <div>
-            {/* Toggle button */}
-            <div className="grid grid-cols-3 items-center my-8">
-                <div></div>
-                <h2 className="text-center text-2xl font-bold">My Posted Event</h2>
-                <div className="flex justify-end m-4">
-                    <button
-                        onClick={() => setViewMode(viewMode === "table" ? "card" : "table")}
-                        className="px-4 py-2 bg-[var(--color-secondary)] text-white rounded hover:bg-secondary/85 transition"
-                    >
-                        Switch to {viewMode === "table" ? "Card" : "Table"} View
-                    </button>
-                </div>
+        <div className="px-4 md:px-8">
+            {/* Header + toggle */}
+            <div className="flex flex-col md:flex-row items-center justify-between my-8 gap-4">
+                <h2 className="text-2xl font-bold text-primary">My Posted Events</h2>
+                <button
+                    onClick={() => setViewMode(viewMode === "table" ? "card" : "table")}
+                    className="px-4 py-2 bg-secondary text-white rounded-xl hover:bg-secondary/85 transition"
+                >
+                    Switch to {viewMode === "table" ? "Card" : "Table"} View
+                </button>
             </div>
 
+            {/* Table View */}
             {viewMode === "table" ? (
-                <div className="overflow-x-auto">
-                    <table className="min-w-full border-collapse border border-gray-300 my-4">
-                        <thead>
-                            <tr className="bg-[var(--color-secondary)] text-white">
-                                <th className="border border-gray-300 p-2 text-left">#</th>
-                                <th className="border border-gray-300 p-2 text-left">Name</th>
-                                <th className="border border-gray-300 p-2 text-left">Type</th>
-                                <th className="border border-gray-300 p-2 text-left">Date</th>
-                                <th className="border border-gray-300 p-2 text-left">Venue</th>
-                                <th className="border border-gray-300 p-2 text-left">Creator Email</th>
-                                <th className="border border-gray-300 p-2 text-left">Category</th>
-                                <th className="border border-gray-300 p-2 text-left">Contact</th>
-                                <th className="border border-gray-300 p-2 text-left">Difficulty</th>
-                                <th className="border border-gray-300 p-2 text-left">Action</th>
+                <div className="overflow-x-auto rounded-xl shadow-lg border border-base-300">
+                    <table className="min-w-full border-collapse">
+                        <thead className="bg-primary text-accent-content sticky top-0">
+                            <tr>
+                                {["#", "Name", "Type", "Date", "Venue", "Category", "Contact", "Difficulty", "Actions"].map((header) => (
+                                    <th key={header} className="px-4 py-2 text-left font-medium">{header}</th>
+                                ))}
                             </tr>
                         </thead>
                         <tbody>
@@ -103,37 +84,22 @@ export default function ManageEventList({ myEventPromise }) {
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: i * 0.05 }}
-                                    whileHover={{ cursor: "pointer" }}
+                                    whileHover={{ backgroundColor: "var(--color-base-300)" }}
                                 >
-                                    <td className="border border-gray-300 p-2">{i + 1}</td>
-                                    <td className="border border-gray-300 p-2 font-semibold text-[var(--color-secondary)]">
-                                        {event.name}
-                                    </td>
-                                    <td className="border border-gray-300 p-2">{event.type}</td>
-                                    <td className="border border-gray-300 p-2">
-                                        {new Date(event.date).toLocaleDateString("en-US", {
-                                            year: "numeric",
-                                            month: "short",
-                                            day: "numeric"
-                                        })}
-                                    </td>
-                                    <td className="border border-gray-300 p-2">{event.venue}</td>
-                                    <td className="border border-gray-300 p-2">{event.creatorEmail}</td>
-                                    <td className="border border-gray-300 p-2">{event.athleticCategory}</td>
-                                    <td className="border border-gray-300 p-2">{event.contactNumber}</td>
-                                    <td className="border border-gray-300 p-2">{event.difficulty}</td>
-                                    <td className="border border-gray-300 p-2 flex items-center gap-4 mt-3">
-                                        <button
-                                            onClick={() => handleUpdate(event._id)}
-                                            className="text-blue-600 hover:text-blue-800"
-                                        >
-                                            <FiEdit size={22} />
+                                    <td className="px-4 py-2">{i + 1}</td>
+                                    <td className="px-4 py-2 font-semibold text-secondary">{event.name}</td>
+                                    <td className="px-4 py-2">{event.type}</td>
+                                    <td className="px-4 py-2">{new Date(event.date).toLocaleDateString()}</td>
+                                    <td className="px-4 py-2">{event.venue}</td>
+                                    <td className="px-4 py-2">{event.athleticCategory}</td>
+                                    <td className="px-4 py-2">{event.contactNumber}</td>
+                                    <td className="px-4 py-2">{event.difficulty}</td>
+                                    <td className="px-4 py-2 flex gap-2">
+                                        <button onClick={() => handleUpdate(event._id)} className="p-2 bg-primary text-white rounded-lg hover:bg-primary/85 transition">
+                                            <FiEdit />
                                         </button>
-                                        <button
-                                            onClick={() => handleDelete(event._id)}
-                                            className="text-red-600 hover:text-red-800"
-                                        >
-                                            <FiTrash2 size={22} />
+                                        <button onClick={() => handleDelete(event._id)} className="p-2 bg-error text-white rounded-lg hover:bg-error/85 transition">
+                                            <FiTrash2 />
                                         </button>
                                     </td>
                                 </motion.tr>
@@ -142,38 +108,32 @@ export default function ManageEventList({ myEventPromise }) {
                     </table>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+                // Card View
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {events.map((event, i) => (
                         <motion.div
                             key={event._id}
-                            className="bg-white rounded-xl shadow-md p-4 border hover:shadow-lg transition"
+                            className="bg-base-100 rounded-2xl shadow-md border border-base-300 p-5 hover:shadow-xl transition flex flex-col justify-between"
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.05 }}
                         >
-                            <h3 className="text-lg font-bold text-[var(--color-secondary)]">
-                                {event.name}
-                            </h3>
-                            <p className="text-sm text-gray-600">{event.type} • {event.date}</p>
-                            <p className="mt-2">{event.description}</p>
-                            <div className="mt-2 text-sm">
+                            <div>
+                                <h3 className="text-xl font-bold text-secondary">{event.name}</h3>
+                                <p className="text-sm text-gray-500 mt-1">{event.type} • {new Date(event.date).toLocaleDateString()}</p>
+                                <p className="mt-2 text-gray-700">{event.description.slice(0, 80)}...</p>
+                            </div>
+                            <div className="mt-4 text-sm space-y-1">
                                 <p><span className="font-semibold">Venue:</span> {event.venue}</p>
-                                <p><span className="font-semibold">Creator:</span> {event.creatorEmail}</p>
                                 <p><span className="font-semibold">Category:</span> {event.athleticCategory}</p>
                                 <p><span className="font-semibold">Contact:</span> {event.contactNumber}</p>
                                 <p><span className="font-semibold">Difficulty:</span> {event.difficulty}</p>
                             </div>
                             <div className="flex gap-2 mt-4">
-                                <button
-                                    onClick={() => handleUpdate(event._id)}
-                                    className="px-3 py-1 flex items-center gap-1 bg-blue-600 text-white rounded hover:bg-blue-700"
-                                >
+                                <button onClick={() => handleUpdate(event._id)} className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-primary text-white rounded-xl hover:bg-primary/85 transition">
                                     <FiEdit /> Edit
                                 </button>
-                                <button
-                                    onClick={() => handleDelete(event._id)}
-                                    className="px-3 py-1 flex items-center gap-1 bg-red-600 text-white rounded hover:bg-red-700"
-                                >
+                                <button onClick={() => handleDelete(event._id)} className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-error text-white rounded-xl hover:bg-error/85 transition">
                                     <FiTrash2 /> Delete
                                 </button>
                             </div>

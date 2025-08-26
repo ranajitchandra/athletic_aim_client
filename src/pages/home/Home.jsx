@@ -7,6 +7,7 @@ import Testimonials from "./Testimonials";
 import FeaturedEvents from "./FeaturedEvents";
 import UpComingEventsCountDown from "./UpcomingEventsCountDown";
 import NewsletterSubscription from "./NewslatterSubsribtion";
+import Achievements from "./Achivement";
 
 export default function Home() {
 
@@ -20,6 +21,7 @@ export default function Home() {
             <TopTrainers></TopTrainers>
             <Testimonials></Testimonials>
             <NewsletterSubscription></NewsletterSubscription>
+            <Achievements></Achievements>
         </>
     );
 }
