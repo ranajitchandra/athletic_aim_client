@@ -12,6 +12,10 @@ const UserRoute = ({ children }) => {
         return <Loading></Loading>
     }
 
+    if (!user) {
+        return <Navigate state={{ from: location.pathname }} to="/login"></Navigate>
+    }
+
     if (role !== 'user' && !roleLoading) {
         return <Navigate state={{ from: location.pathname }} to="/forbidden"></Navigate>
     }
